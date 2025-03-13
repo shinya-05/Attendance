@@ -1,18 +1,61 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\AttendanceListController;
+use App\Http\Controllers\AttendanceDetailController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\AdminStaffController;
+use App\Http\Controllers\AdminAttendanceListController;
+use App\Http\Controllers\AdminAttendanceDetailController;
+
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+//メール認証
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('mypage/profile');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance/start', [AttendanceController::class, 'startAttendance'])->name('attendance.start');
+    Route::post('/attendance/end', [AttendanceController::class, 'endAttendance'])->name('attendance.end');
+    Route::post('/attendance/break', [AttendanceController::class, 'toggleBreak'])->name('attendance.break');
+    Route::get('/attendance/list', [AttendanceListController::class, 'index'])->name('attendance.list');
+    Route::get('/attendance-detail/{id}', [AttendanceDetailController::class, 'show'])->name('attendance.detail');
+    Route::put('/attendance-detail/{id}', [AttendanceDetailController::class, 'update'])->name('attendance.update');
+    Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+});
+
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+    Route::get('/admin/login', [AuthenticatedSessionController::class, 'create'])->name('admin.login');
+    Route::post('/admin/login', [AuthenticatedSessionController::class, 'store']);
+});
+
+
+
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin/logout', [AuthenticatedSessionController::class, 'destroy'])->name('admin.logout');
+    Route::get('/admin/attendance/list', [AdminDashboardController::class, 'index'])->name('admin.attendance');
+    Route::get('/admin/attendance-detail/{id}', [AdminAttendanceDetailController::class, 'show'])
+        ->name('admin.attendance.detail');
+    Route::get('/admin/staff/list', [AdminStaffController::class, 'index'])->name('admin.staff.list');
+    Route::get('/admin/attendance/{id}', [AdminAttendanceListController::class, 'show'])->name('admin.attendance.list');
 });
