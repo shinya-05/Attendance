@@ -36,13 +36,7 @@
                     <td>{{ $attendance->end_time }}</td>
                     <td>{{ $attendance->rest_time }}</td>
                     <td>{{ $attendance->total_time }}</td>
-                    <td>
-                        <a href="{{ Auth::user()->is_admin 
-                            ? route('admin.attendance.detail', ['id' => $attendance->id]) 
-                            : route('attendance.detail', ['id' => $attendance->id]) }}">
-                            詳細
-                        </a>
-                    </td>
+                    <td><a href="{{ route('admin.attendance.detail', ['id' => $attendance->id]) }}">詳細</a></td>
                 </tr>
             @endforeach
         </tbody>

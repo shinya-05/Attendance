@@ -27,10 +27,12 @@
             <tr>
                 <th>出勤・退勤</th>
                 <td>
-                    <div class="detail-table__input">
-                        <input type="text" name="start_time" value="{{ \Carbon\Carbon::parse($attendance->start_time)->format('H:i') }}">
+                     <div class="detail-table__input">
+                        <input type="text" name="start_time" value="{{ \Carbon\Carbon::parse($attendance->start_time)->format('H:i') }}" 
+                            {{ $attendance->status === '承認待ち' ? 'disabled' : '' }}>
                         <p>〜</p>
-                        <input type="text" name="end_time" value="{{ \Carbon\Carbon::parse($attendance->end_time)->format('H:i') }}">
+                        <input type="text" name="end_time" value="{{ \Carbon\Carbon::parse($attendance->end_time)->format('H:i') }}" 
+                            {{ $attendance->status === '承認待ち' ? 'disabled' : '' }}>
                     </div>
                 </td>
             </tr>
@@ -38,21 +40,27 @@
                 <th>休憩</th>
                 <td>
                     <div class="detail-table__input">
-                        <input type="text" name="rest_start" value="{{ \Carbon\Carbon::parse($attendance->rest_start)->format('H:i') }}">
+                        <input type="text" name="rest_start" value="{{ \Carbon\Carbon::parse($attendance->rest_start)->format('H:i') }}" 
+                            {{ $attendance->status === '承認待ち' ? 'disabled' : '' }}>
                         <p>〜</p>
-                        <input type="text" name="rest_end" value="{{ \Carbon\Carbon::parse($attendance->rest_end)->format('H:i') }}">
+                        <input type="text" name="rest_end" value="{{ \Carbon\Carbon::parse($attendance->rest_end)->format('H:i') }}" 
+                            {{ $attendance->status === '承認待ち' ? 'disabled' : '' }}>
                     </div>
                 </td>
             </tr>
             <tr>
                 <th>備考</th>
                 <td>
-                    <textarea name="note" >{{ $attendance->note }}</textarea>
+                    <textarea name="note" {{ $attendance->status === '承認待ち' ? 'disabled' : '' }}>{{ $attendance->note }}</textarea>
                 </td>
             </tr>
         </table>
         <div class="btn-container">
-            <button type="submit" class="btn">修正</button>
+            @if($attendance->status === '承認待ち')
+                <p class="approval-message">* 承認待ちのため修正はできません。</p>
+            @else
+                <button type="submit" class="btn">修正</button>
+            @endif
         </div>
     </form>
 </div>

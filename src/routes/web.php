@@ -4,9 +4,11 @@ use App\Http\Controllers\AttendanceController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\AttendanceListController;
 use App\Http\Controllers\AttendanceDetailController;
+use App\Http\Controllers\AttendanceRequestController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\AdminStaffController;
+use App\Http\Controllers\AdminAttendanceController;
 use App\Http\Controllers\AdminAttendanceListController;
 use App\Http\Controllers\AdminAttendanceDetailController;
 
@@ -29,7 +31,7 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-
+//一般ユーザー
 Route::middleware(['auth'])->group(function() {
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::post('/attendance/start', [AttendanceController::class, 'startAttendance'])->name('attendance.start');
@@ -40,8 +42,10 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/attendance-detail/{id}', [AttendanceDetailController::class, 'update'])->name('attendance.update');
     Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
+
 });
 
+//ログイン機能
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
@@ -50,7 +54,7 @@ Route::middleware(['guest'])->group(function () {
 });
 
 
-
+//管理者ユーザー
 Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/logout', [AuthenticatedSessionController::class, 'destroy'])->name('admin.logout');
     Route::get('/admin/attendance/list', [AdminDashboardController::class, 'index'])->name('admin.attendance');
@@ -58,4 +62,14 @@ Route::middleware(['auth:admin'])->group(function () {
         ->name('admin.attendance.detail');
     Route::get('/admin/staff/list', [AdminStaffController::class, 'index'])->name('admin.staff.list');
     Route::get('/admin/attendance/{id}', [AdminAttendanceListController::class, 'show'])->name('admin.attendance.list');
+
+    Route::post('/admin/attendance/{id}/approve', [AdminAttendanceController::class, 'approve'])->name('admin.attendance.approve');
+});
+
+
+
+
+Route::middleware(['auth:web,admin'])->group(function () {
+    Route::get('/stamp_correction_request/list', [AttendanceRequestController::class, 'index'])
+        ->name('attendance.requests');
 });
