@@ -22,7 +22,7 @@ Route::get('/email/verify', function () {
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
 
-    return redirect('mypage/profile');
+    return redirect('/attendance');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
@@ -30,6 +30,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 
 //一般ユーザー
 Route::middleware(['auth'])->group(function() {
@@ -60,10 +61,17 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/attendance/list', [AdminDashboardController::class, 'index'])->name('admin.attendance');
     Route::get('/admin/attendance-detail/{id}', [AdminAttendanceDetailController::class, 'show'])
         ->name('admin.attendance.detail');
+    Route::put('/admin/attendance-detail/{id}', [AdminAttendanceDetailController::class, 'update'])
+        ->name('admin.attendance.update');
     Route::get('/admin/staff/list', [AdminStaffController::class, 'index'])->name('admin.staff.list');
     Route::get('/admin/attendance/{id}', [AdminAttendanceListController::class, 'show'])->name('admin.attendance.list');
+    Route::get('/admin/attendance/{id}/export', [AdminAttendanceListController::class, 'export'])->name('admin.attendance.export');
 
-    Route::post('/admin/attendance/{id}/approve', [AdminAttendanceController::class, 'approve'])->name('admin.attendance.approve');
+    Route::get('/stamp_correction_request/approve/{attendance}', [AttendanceRequestController::class, 'showApproval'])
+    ->name('attendance.approveForm');
+
+    Route::post('/stamp_correction_request/approve/{attendance}', [AttendanceRequestController::class, 'approve'])
+    ->name('attendance.approve');
 });
 
 

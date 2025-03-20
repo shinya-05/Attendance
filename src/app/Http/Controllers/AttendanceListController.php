@@ -10,12 +10,15 @@ class AttendanceListController extends Controller
 {
     public function index(Request $request)
     {
+        $user = auth()->user(); // ログインしているユーザーを取得
         $month = $request->input('month', Carbon::now()->format('Y-m'));
         $currentDate = Carbon::createFromFormat('Y-m', $month);
         $previousMonth = $currentDate->copy()->subMonth()->format('Y-m');
         $nextMonth = $currentDate->copy()->addMonth()->format('Y-m');
 
-        $attendances = Attendance::whereYear('date', $currentDate->year)
+        // ログインユーザーの勤怠情報のみ取得
+        $attendances = Attendance::where('user_id', $user->id)
+            ->whereYear('date', $currentDate->year)
             ->whereMonth('date', $currentDate->month)
             ->get()
             ->map(function ($attendance) {
@@ -31,6 +34,7 @@ class AttendanceListController extends Controller
             'nextMonth' => $nextMonth,
         ]);
     }
+
 
     private function calculateRestTime($attendance)
     {

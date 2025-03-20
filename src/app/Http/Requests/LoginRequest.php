@@ -50,7 +50,7 @@ class LoginRequest extends FortifyLoginRequest
 
         if (! Auth::guard($guard)->attempt($credentials, $this->boolean('remember'))) {
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'email' => 'ログイン情報が登録されていません',
             ]);
         }
 

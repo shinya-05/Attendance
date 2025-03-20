@@ -1,0 +1,20 @@
+.btn-container {
+    text-align: right;
+    margin-top: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 24px;
+    font-size: 22px;
+    color: #fff;
+    background-color: #000;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #333;
+}

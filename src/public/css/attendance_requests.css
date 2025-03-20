@@ -1,0 +1,28 @@
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #000000;
+    margin-bottom: 40px;
+    margin-top: 50px;
+}
+
+.tab-link {
+    padding: 10px 20px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+}
+
+.tab-link.active {
+    border-bottom: 3px solid #000;
+    color: #000;
+}
+
+
+.tab-content.active {
+    display: block;
+    /* アクティブなタブを表示 */
+}

@@ -9,7 +9,7 @@ class AdminStaffController extends Controller
 {
     public function index()
     {
-        $staffs = User::where('is_admin', false)->get();
+        $staffs = User::all();
 
         return view('admin.staff_list', compact('staffs'));
     }

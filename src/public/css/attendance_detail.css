@@ -96,3 +96,10 @@ textarea {
 .btn:hover {
     background-color: #555;
 }
+
+.alert-danger li {
+    color: red;
+    text-decoration: none;
+    list-style: none;
+
+}

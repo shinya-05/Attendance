@@ -24,24 +24,22 @@ class AttendanceRequestController extends Controller
     }
     }
 
-    public function approve($id)
-{
-    $request = AttendanceRequest::findOrFail($id);
-    $attendance = $request->attendance;
-
-    // 勤怠データを更新
-    $attendance->update([
-        'start_time' => $request->new_start_time,
-        'end_time' => $request->new_end_time,
-        'note' => $request->note,
-        'status' => '承認済み'
-    ]);
-
-    // 申請を削除
-    $request->delete();
-
-    return redirect()->route('attendance.requests')->with('message', '申請を承認しました。');
+    public function showApproval($id)
+    {
+        $attendance = Attendance::with('user')->findOrFail($id);
+        return view('admin.approve_attendance', compact('attendance'));
     }
 
+    /**
+     * 承認処理
+     */
+    public function approve($id)
+    {
+        $attendance = Attendance::findOrFail($id);
+        $attendance->status = '承認済み';
+        $attendance->save();
+
+        return redirect()->route('attendance.requests');
+    }
 
 }

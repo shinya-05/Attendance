@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateAttendanceRequest;
 use App\Models\Attendance;
 
 class AdminAttendanceDetailController extends Controller
@@ -17,29 +18,22 @@ class AdminAttendanceDetailController extends Controller
         ]);
     }
 
-    public function approve(Request $request, $id)
+    public function update(UpdateAttendanceRequest $request, $id)
     {
+        // 勤怠データを取得
         $attendance = Attendance::findOrFail($id);
 
-        // 承認処理
+        // 更新
         $attendance->update([
-            'status' => '承認済み'
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'rest_start' => $request->rest_start,
+            'rest_end' => $request->rest_end,
+            'note' => $request->note,
+            'status' => '承認済み', // 直接反映されるため、承認済みに変更
         ]);
 
-        return redirect()->route('admin.attendance.detail', ['id' => $attendance->id])
-            ->with('success', '勤怠修正を承認しました');
+        return redirect()->route('admin.attendance.detail', ['id' => $id]);
     }
 
-    public function reject(Request $request, $id)
-    {
-        $attendance = Attendance::findOrFail($id);
-
-        // 却下処理
-        $attendance->update([
-            'status' => '却下'
-        ]);
-
-        return redirect()->route('admin.attendance.detail', ['id' => $attendance->id])
-            ->with('error', '勤怠修正を却下しました');
-    }
 }
