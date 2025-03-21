@@ -33,14 +33,14 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 
 //一般ユーザー
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::post('/attendance/start', [AttendanceController::class, 'startAttendance'])->name('attendance.start');
     Route::post('/attendance/end', [AttendanceController::class, 'endAttendance'])->name('attendance.end');
     Route::post('/attendance/break', [AttendanceController::class, 'toggleBreak'])->name('attendance.break');
     Route::get('/attendance/list', [AttendanceListController::class, 'index'])->name('attendance.list');
-    Route::get('/attendance-detail/{id}', [AttendanceDetailController::class, 'show'])->name('attendance.detail');
-    Route::put('/attendance-detail/{id}', [AttendanceDetailController::class, 'update'])->name('attendance.update');
+    Route::get('/attendance/{id}', [AttendanceDetailController::class, 'show'])->name('attendance.detail');
+    Route::put('/attendance/{id}', [AttendanceDetailController::class, 'update'])->name('attendance.update');
     Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 
@@ -59,12 +59,12 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth:admin'])->group(function () {
     Route::get('/admin/logout', [AuthenticatedSessionController::class, 'destroy'])->name('admin.logout');
     Route::get('/admin/attendance/list', [AdminDashboardController::class, 'index'])->name('admin.attendance');
-    Route::get('/admin/attendance-detail/{id}', [AdminAttendanceDetailController::class, 'show'])
+    Route::get('/admin/attendance/{id}', [AdminAttendanceDetailController::class, 'show'])
         ->name('admin.attendance.detail');
-    Route::put('/admin/attendance-detail/{id}', [AdminAttendanceDetailController::class, 'update'])
+    Route::put('/admin/attendance/{id}', [AdminAttendanceDetailController::class, 'update'])
         ->name('admin.attendance.update');
     Route::get('/admin/staff/list', [AdminStaffController::class, 'index'])->name('admin.staff.list');
-    Route::get('/admin/attendance/{id}', [AdminAttendanceListController::class, 'show'])->name('admin.attendance.list');
+    Route::get('/admin/attendance/staff/{id}', [AdminAttendanceListController::class, 'show'])->name('admin.attendance.list');
     Route::get('/admin/attendance/{id}/export', [AdminAttendanceListController::class, 'export'])->name('admin.attendance.export');
 
     Route::get('/stamp_correction_request/approve/{attendance}', [AttendanceRequestController::class, 'showApproval'])

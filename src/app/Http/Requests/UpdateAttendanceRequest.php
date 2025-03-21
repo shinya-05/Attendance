@@ -41,7 +41,7 @@ class UpdateAttendanceRequest extends FormRequest
             'end_time.after' => '出勤時間もしくは退勤時間が不適切な値です',
             'rest_start.after_or_equal' => '休憩時間が勤務時間外です',
             'rest_start.before_or_equal' => '休憩時間が勤務時間外です',
-            'rest_end.after' => '休憩開始時間より後の時間を設定してください',
+            'rest_end.after' => '休憩時間が勤務時間外です',
             'rest_end.before_or_equal' => '休憩時間が勤務時間外です',
             'note.required' => '備考を記入してください。',
         ];

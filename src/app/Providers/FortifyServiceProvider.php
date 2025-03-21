@@ -68,7 +68,7 @@ class FortifyServiceProvider extends ServiceProvider
 
         // ログインページの分岐
         Fortify::loginView(function () {
-            return request()->is('admin/*') ? view('auth.admin-login') : view('auth.login');
+            return request()->is('admin/*') ? view('auth.admin_login') : view('auth.login');
         });
 
 
