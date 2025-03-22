@@ -42,4 +42,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    public function attendances()
+    {
+        return $this->hasMany('App\Models\Attendance');
+         //「1対多」の関係
+    }
+
 }

@@ -17,10 +17,19 @@ class AttendanceRequestController extends Controller
     }
 
     if (Auth::guard('web')->check()) {
-        // 一般ユーザー → 自分の申請
-        $requests = Attendance::where('user_id', Auth::id())->get();
-        return view('attendance_requests', compact('requests'));
-    }
+        $pendingRequests = Attendance::with('user')
+            ->where('user_id', Auth::id())
+            ->where('status', '承認待ち')
+            ->get();
+
+        $approvedRequests = Attendance::with('user')
+            ->where('user_id', Auth::id())
+            ->where('status', '承認済み')
+            ->get();
+
+    return view('attendance_requests', compact('pendingRequests', 'approvedRequests'));
+}
+
 
     return redirect()->route('login');
 }
