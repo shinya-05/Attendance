@@ -76,3 +76,7 @@ php artisan migrate
 php artisan db:seed
 ```
 
+## アプリケーションURL
+- 管理者ページにログインする際は、下記を入力して下さい。
+　メール：admin@example.com
+　パスワード：password123
