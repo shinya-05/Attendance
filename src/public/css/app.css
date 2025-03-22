@@ -62,10 +62,7 @@
 
 /* ---- PCサイズ（1400px〜1540px向け） ---- */
 @media (min-width: 1400px) and (max-width: 1540px) {
-    .header-search__input {
-        max-width: 450px;
-        /* 検索バーの幅を縮小 */
-    }
+
 
     .header-nav-list {
         gap: 15px;
@@ -93,20 +90,6 @@
     .header-logo {
         margin-bottom: 10px;
         /* ロゴの下に余白を追加 */
-    }
-
-    .header-search {
-        width: 100%;
-        /* 検索バーを幅いっぱいにする */
-        margin-bottom: 10px;
-        /* 下に余白を追加 */
-    }
-
-    .header-search__input {
-        max-width: none;
-        /* 検索バーの最大幅を解除 */
-        font-size: 14px;
-        /* フォントサイズを少し小さく */
     }
 
     .header-nav-list {

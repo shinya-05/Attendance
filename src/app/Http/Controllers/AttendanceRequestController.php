@@ -9,20 +9,22 @@ use Illuminate\Support\Facades\Auth;
 class AttendanceRequestController extends Controller
 {
     public function index()
-    {
-        if (Auth::guard('admin')->check()) {
-        // 管理者がアクセスしている場合 → すべての承認待ち申請を取得
+{
+    if (Auth::guard('admin')->check()) {
+        // 管理者 → 全ての承認待ち
         $requests = Attendance::with('user')->where('status', '承認待ち')->get();
         return view('admin.attendance_requests', compact('requests'));
-    } elseif (Auth::guard('web')->check()) {
-        // 一般ユーザーがアクセスしている場合 → 自分の申請のみ取得
+    }
+
+    if (Auth::guard('web')->check()) {
+        // 一般ユーザー → 自分の申請
         $requests = Attendance::where('user_id', Auth::id())->get();
         return view('attendance_requests', compact('requests'));
-    } else {
-        // 未ログインの場合はログイン画面へリダイレクト
-        return redirect()->route('login');
     }
-    }
+
+    return redirect()->route('login');
+}
+
 
     public function showApproval($id)
     {

@@ -77,7 +77,7 @@ Route::middleware(['auth:admin'])->group(function () {
 
 
 
-Route::middleware(['auth:web,admin'])->group(function () {
+Route::middleware(['user.type'])->group(function () {
     Route::get('/stamp_correction_request/list', [AttendanceRequestController::class, 'index'])
         ->name('attendance.requests');
 });

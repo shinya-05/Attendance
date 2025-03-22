@@ -23,9 +23,9 @@ class UpdateAttendanceRequest extends FormRequest
     {
         return [
             'start_time' => ['required'],
-            'end_time' => ['required', 'after:start_time'],
-            'rest_start' => ['nullable', 'after_or_equal:start_time', 'before_or_equal:end_time'],
-            'rest_end' => ['nullable', 'after:rest_start', 'before_or_equal:end_time'],
+            'end_time' => ['required'],
+            'rest_start' => ['nullable'],
+            'rest_end' => ['nullable'],
             'note' => ['required', 'string'],
         ];
     }
@@ -39,10 +39,8 @@ class UpdateAttendanceRequest extends FormRequest
             'start_time.required' => '出勤時間を入力してください',
             'end_time.required' => '退勤時間を入力してください',
             'end_time.after' => '出勤時間もしくは退勤時間が不適切な値です',
-            'rest_start.after_or_equal' => '休憩時間が勤務時間外です',
             'rest_start.before_or_equal' => '休憩時間が勤務時間外です',
             'rest_end.after' => '休憩時間が勤務時間外です',
-            'rest_end.before_or_equal' => '休憩時間が勤務時間外です',
             'note.required' => '備考を記入してください。',
         ];
     }

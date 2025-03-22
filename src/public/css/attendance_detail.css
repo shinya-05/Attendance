@@ -103,3 +103,8 @@ textarea {
     list-style: none;
 
 }
+
+.approval-message {
+    color: #FF000080;
+    font-size: 18px;
+}

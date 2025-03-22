@@ -48,13 +48,15 @@
             <tr>
                 <th>休憩</th>
                 <td>
-                    <div class="detail-table__input">
-                        <input type="text" name="rest_start" value="{{ \Carbon\Carbon::parse($attendance->rest_start)->format('H:i') }}" 
-                            {{ $attendance->status === '承認待ち' ? 'disabled' : '' }}>
-                        <p>〜</p>
-                        <input type="text" name="rest_end" value="{{ \Carbon\Carbon::parse($attendance->rest_end)->format('H:i') }}" 
-                            {{ $attendance->status === '承認待ち' ? 'disabled' : '' }}>
-                    </div>
+                    @foreach ($attendance->rests as $rest)
+                        <div class="detail-table__input">
+                            <input type="text" name="rest_start[]" value="{{ \Carbon\Carbon::parse($rest->start_time)->format('H:i') }}" 
+                                {{ $attendance->status === '承認待ち' ? 'disabled' : '' }}>
+                            <p>〜</p>
+                            <input type="text" name="rest_end[]" value="{{ \Carbon\Carbon::parse($rest->end_time)->format('H:i') }}" 
+                                {{ $attendance->status === '承認待ち' ? 'disabled' : '' }}>
+                        </div>
+                    @endforeach
                 </td>
             </tr>
             <tr>

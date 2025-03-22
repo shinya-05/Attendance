@@ -11,7 +11,7 @@ class AttendanceDetailController extends Controller
 {
     public function show($id)
     {
-        $attendance = Attendance::with('user')->findOrFail($id);
+        $attendance = Attendance::with('user', 'rests')->findOrFail($id);
 
         return view('attendance_detail', [
             'attendance' => $attendance,

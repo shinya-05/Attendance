@@ -11,7 +11,7 @@ class AdminAttendanceDetailController extends Controller
     public function show($id)
     {
         // すべての勤怠情報を取得（管理者用）
-        $attendance = Attendance::with('user')->findOrFail($id);
+        $attendance = Attendance::with('user', 'rests')->findOrFail($id);
 
         return view('admin.attendance_detail', [
             'attendance' => $attendance
