@@ -1,7 +1,7 @@
 #　アプリケーション名
 - coachtechフリマ
   ある企業が開発した独自の勤怠アプリ
-  ![alt text](https://github.com/shinya-05/frimaap/blob/main/src/image.png)
+  ![alt text](src/image1.png)
 
 ## 作成した目的
 - ユーザーの勤怠と管理を目的とする
@@ -18,7 +18,7 @@
 - MySQL8.0.26
 
 ## ER図
-- ![alt text](https://github.com/shinya-05/frimaap/blob/main/src/image-1.png)
+- ![alt text](src/image.png)
 
 
 ## 環境構築
